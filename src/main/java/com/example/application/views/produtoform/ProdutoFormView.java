@@ -1,6 +1,9 @@
 package com.example.application.views.produtoform;
 
-import com.example.application.components.pricefield.PriceField;
+import java.sql.PreparedStatement;
+
+import com.example.application.data.Produto;
+import com.example.application.data.ProdutoRepository;
 import com.example.application.views.MainLayout;
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.button.Button;
@@ -30,12 +33,30 @@ public class ProdutoFormView extends Composite<VerticalLayout> {
         VerticalLayout layoutColumn2 = new VerticalLayout();
         H3 h3 = new H3();
         FormLayout formLayout2Col = new FormLayout();
-        TextField textField = new TextField();
-        TextField textField2 = new TextField();
-        DatePicker datePicker = new DatePicker();
-        PriceField price = new PriceField();
+        TextField textFieldProduto = new TextField();
+        TextField textFieldFornecedor = new TextField();
+        TextField textFieldData = new TextField();
+        TextField textFieldPreco = new TextField();
         HorizontalLayout layoutRow = new HorizontalLayout();
+        
         Button buttonPrimary = new Button();
+        buttonPrimary.addClickListener(clickEvent -> {
+            Produto produto = new Produto();
+            produto.setNome(textFieldProduto.getValue());
+            produto.setFornecedor(textFieldFornecedor.getValue());
+            produto.setUltimaDataCompra(textFieldData.getValue());
+            produto.setPreco(textFieldPreco.getValue());
+            // produto.setUltimaDataCompra(datePicker.getValue());
+            // produto.setPreco(price.getValue());
+            ProdutoRepository produtoRepository = new ProdutoRepository();
+
+           produtoRepository.salvar(produto);
+           
+           textFieldProduto.clear();
+           textFieldFornecedor.clear();
+           textFieldData.clear();
+           textFieldPreco.clear();
+        });
         Button buttonPrimary2 = new Button();
         Button buttonPrimary3 = new Button();
         getContent().setWidth("100%");
@@ -48,11 +69,10 @@ public class ProdutoFormView extends Composite<VerticalLayout> {
         h3.setText("Personal Information");
         h3.setWidth("100%");
         formLayout2Col.setWidth("100%");
-        textField.setLabel("Produto");
-        textField2.setLabel("Fornecedor");
-        datePicker.setLabel("Data da Compra");
-        price.setLabel("Preço");
-        price.setWidth("min-content");
+        textFieldProduto.setLabel("Produto");
+        textFieldFornecedor.setLabel("Fornecedor");
+        textFieldData.setLabel("Data da Compra");
+        textFieldPreco.setLabel("Preco");
         layoutRow.addClassName(Gap.MEDIUM);
         layoutRow.setWidth("100%");
         layoutRow.getStyle().set("flex-grow", "1");
@@ -68,13 +88,18 @@ public class ProdutoFormView extends Composite<VerticalLayout> {
         getContent().add(layoutColumn2);
         layoutColumn2.add(h3);
         layoutColumn2.add(formLayout2Col);
-        formLayout2Col.add(textField);
-        formLayout2Col.add(textField2);
-        formLayout2Col.add(datePicker);
-        formLayout2Col.add(price);
+        formLayout2Col.add(textFieldProduto);
+        formLayout2Col.add(textFieldFornecedor);
+        formLayout2Col.add(textFieldData);
+        formLayout2Col.add(textFieldPreco);
         layoutColumn2.add(layoutRow);
         layoutRow.add(buttonPrimary);
         layoutRow.add(buttonPrimary2);
         layoutRow.add(buttonPrimary3);
     }
+
+    private void adicionaEventoBotoes(){
+        
+    }
+
 }
